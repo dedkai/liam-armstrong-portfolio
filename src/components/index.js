@@ -1,0 +1,9 @@
+export { default as NavigationBar } from "./NavigationBar";
+export { default as Footer } from "./Footer";
+export { default as HomePage } from "./HomePage";
+export { default as AboutPage } from "./AboutPage";
+export { default as ProjectsPage } from "./ProjectsPage";
+export { default as ServicesPage } from "./ServicesPage";
+export { default as ReferencesPage } from "./ReferencesPage";
+export { default as ContactPage } from "./ContactPage";
+export { default as NotFoundPage } from "./NotFoundPage";
