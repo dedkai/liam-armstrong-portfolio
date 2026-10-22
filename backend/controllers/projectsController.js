@@ -1,6 +1,20 @@
 import Project from '../models/project.js';
 import serializeDocument from '../utils/serializeDocument.js';
 
+const normalizeProjectPayload = (body = {}) => {
+  const title = body.title ?? '';
+  const description = body.description ?? '';
+  const completion = body.completion ?? '';
+
+  return {
+    ...body,
+    title,
+    description,
+    completion,
+    image: body.image ?? '',
+  };
+};
+
 export const getAllProjects = async (req, res, next) => {
   try {
     const projects = await Project.find();
@@ -37,7 +51,16 @@ export const getProjectById = async (req, res, next) => {
 
 export const addProject = async (req, res, next) => {
   try {
-    const project = await Project.create(req.body);
+    const payload = normalizeProjectPayload(req.body);
+
+    if (!payload.title || !payload.completion || !payload.description) {
+      return res.status(400).json({
+        success: false,
+        message: 'title, completion, and description are required.',
+      });
+    }
+
+    const project = await Project.create(payload);
     res.status(201).json({
       success: true,
       message: 'Project added successfully.',
@@ -50,7 +73,8 @@ export const addProject = async (req, res, next) => {
 
 export const updateProject = async (req, res, next) => {
   try {
-    const project = await Project.findByIdAndUpdate(req.params.id, req.body, {
+    const payload = normalizeProjectPayload(req.body);
+    const project = await Project.findByIdAndUpdate(req.params.id, payload, {
       new: true,
       runValidators: true,
     });
@@ -65,6 +89,7 @@ export const updateProject = async (req, res, next) => {
     return res.status(200).json({
       success: true,
       message: 'Project updated successfully.',
+      data: serializeDocument(project),
     });
   } catch (error) {
     return next(error);
@@ -85,6 +110,7 @@ export const deleteProject = async (req, res, next) => {
     return res.status(200).json({
       success: true,
       message: 'Project deleted successfully.',
+      data: serializeDocument(project),
     });
   } catch (error) {
     return next(error);
