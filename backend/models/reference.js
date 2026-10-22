@@ -2,24 +2,37 @@ import mongoose from 'mongoose';
 
 const referenceSchema = new mongoose.Schema(
   {
-    name: {
+    firstName: {
       type: String,
       required: true,
       trim: true,
     },
-    testimonial: {
+    lastName: {
       type: String,
       required: true,
       trim: true,
     },
-    position: {
+    firstname: {
+      type: String,
+      trim: true,
+    },
+    lastname: {
+      type: String,
+      trim: true,
+    },
+    email: {
       type: String,
       required: true,
       trim: true,
     },
     company: {
       type: String,
-      required: true,
+      default: '',
+      trim: true,
+    },
+    position: {
+      type: String,
+      default: '',
       trim: true,
     },
   },
